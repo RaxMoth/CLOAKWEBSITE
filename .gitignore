@@ -7,10 +7,18 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
 dist
 dist-ssr
 *.local
+
+# Environment variables - NEVER commit these
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # Editor directories and files
 .vscode/*
@@ -22,3 +30,34 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.swp
+*~
+
+# IDE temporary files
+.#*
+*.tmp
+
+# Build outputs
+build/
+coverage/
+
+# Firebase and service account keys
+serviceAccountKey.json
+firebase-key.json
+*.json.private
+
+# Temporary files
+tmp/
+temp/
+
+# macOS
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Cache
+.cache/
+cache/

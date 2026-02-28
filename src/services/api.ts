@@ -6,7 +6,7 @@
 import { ApiResponse } from "../types";
 
 const API_BASE_URL =
-    (import.meta.env.VITE_API_URL as string) || "https://api.example.com";
+    (import.meta.env.VITE_API_URL as string) || "http://localhost:8080";
 
 interface FetchOptions extends RequestInit {
     headers?: Record<string, string>;

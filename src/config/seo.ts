@@ -1,74 +1,45 @@
 /**
- * SEO Configuration for Good Morning Girl
+ * SEO Configuration for the CLOAK website
  */
 
-import { MetaTags, StructuredData } from "../types";
+import { MetaTags } from "../types";
+import { APP_CONFIG } from "./app";
 
 export const SITE_CONFIG = {
-    name: "Good Morning Girl",
-    url: "https://goodmorninggirl.com",
-    description:
-        "Start your day right with wellness tips, meditation, and community support.",
-    logo: "https://goodmorninggirl.com/logo.png",
-    ogImage: "https://goodmorninggirl.com/og-image.png",
-    socialLinks: {
-        twitter: "https://twitter.com/goodmorninggirl",
-        instagram: "https://instagram.com/goodmorninggirl",
-        facebook: "https://facebook.com/goodmorninggirl",
-    },
+    name: APP_CONFIG.name,
+    description: APP_CONFIG.description,
 };
 
+/** Page metadata, keyed by route path. */
 export const PAGE_META: Record<string, MetaTags> = {
-    home: {
-        title: "Good Morning Girl | Start Your Day With Wellness",
+    "/": {
+        title: "CLOAK | Digital Ticketing System",
         description:
-            "Beautiful morning wellness template for daily meditation, wellness tracking, and community support.",
-        keywords: [
-            "wellness",
-            "meditation",
-            "morning routine",
-            "self-care",
-            "wellbeing",
-        ],
+            "Slot-based QR ticketing for venues. Every coat, bag or locker gets a numbered slot and a signed QR ticket. In development.",
+        keywords: ["QR tickets", "cloakroom", "coat check", "venues", "slots"],
         ogType: "website",
     },
-    about: {
-        title: "About Us | Good Morning Girl",
+    "/about": {
+        title: "How it works | CLOAK",
         description:
-            "Learn about our mission to help women start their day with wellness and positivity.",
-        keywords: ["about", "mission", "wellness", "community"],
+            "How CLOAK issues, verifies and releases slot-based QR tickets, step by step for venues and guests.",
+        keywords: ["how it works", "QR ticket", "cloakroom ticket", "scan"],
         ogType: "website",
     },
-    features: {
-        title: "Features | Good Morning Girl",
+    "/features": {
+        title: "Features | CLOAK",
         description:
-            "Discover our wellness tracking, guided meditation, and community features.",
-        keywords: ["features", "wellness", "meditation", "tracking"],
+            "What is inside CLOAK: HMAC-signed QR codes, role-based sign-in, row-level slot locking and a Flutter app.",
+        keywords: ["HMAC", "JWT", "PostgreSQL", "Go", "Flutter"],
         ogType: "website",
     },
-    contact: {
-        title: "Contact Us | Good Morning Girl",
-        description: "Get in touch with our wellness team. We're here to help.",
-        keywords: ["contact", "support", "help", "email"],
+    "/status": {
+        title: "Project status | CLOAK",
+        description:
+            "What works in CLOAK today, what is half built and what is not available yet.",
+        keywords: ["status", "roadmap", "in development"],
         ogType: "website",
     },
 };
 
-export const generateOrganizationSchema = (): StructuredData => ({
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Good Morning Girl",
-    url: SITE_CONFIG.url,
-    logo: SITE_CONFIG.logo,
-    description: SITE_CONFIG.description,
-    sameAs: [
-        SITE_CONFIG.socialLinks.twitter,
-        SITE_CONFIG.socialLinks.facebook,
-        SITE_CONFIG.socialLinks.instagram,
-    ],
-    contactPoint: {
-        "@type": "ContactPoint",
-        contactType: "Customer Service",
-        email: "hello@goodmorninggirl.com",
-    },
-});
+export const DEFAULT_META = PAGE_META["/"];

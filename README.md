@@ -1,15 +1,25 @@
 # CLOAK Website (CLOAKWEBSITE)
 
-The public-facing marketing and business portal for the CLOAK digital ticketing platform. Built with React, TypeScript, and Vite for optimal performance and developer experience.
+The public website for CLOAK, a slot-based QR ticketing system for venues. It describes what the mobile app (CLOAKMobile) and backend (CLOAKBE) do today. Built with React, TypeScript, and Vite.
 
 ## 🎯 Overview
 
-CLOAKWEBSITE is a modern, responsive web application that serves as:
+CLOAKWEBSITE is a static, responsive information site with four pages:
 
-- **Marketing Hub** - Landing page showcasing CLOAK features and benefits
-- **Business Portal** - Dashboard for businesses to manage services, view analytics, and monitor tickets
-- **Customer Access** - Information about events and services
-- **Partner Onboarding** - Sign-up and documentation for new businesses
+- **Home** (`/`) - What CLOAK is, real app screenshots, and what it does today
+- **How it works** (`/about`) - The flow for venues and guests, step by step
+- **Features** (`/features`) - Technical detail: signed QR codes, roles, slot locking, architecture
+- **Status** (`/status`) - What works, what is half built, and what is not available yet
+
+The site makes no API calls and has no sign-up, portal or pricing: CLOAK is in development and not publicly released.
+
+### Keeping the site in step with the app
+
+The site only states what the current build does. When the app or backend changes:
+
+1. Update `src/config/status.ts` (the list behind the Status page) and `lastUpdated` in `src/config/app.ts`.
+2. Update the copy on the page that describes the changed behaviour.
+3. Retake the screenshots in `public/screenshots/` if a screen changed. They are captured from the app's web build at 375x812 with demo data.
 
 ## 🛠️ Technology Stack
 
@@ -30,38 +40,32 @@ CLOAKWEBSITE is a modern, responsive web application that serves as:
 CLOAKWEBSITE/
 ├── src/
 │   ├── pages/                       # Page components (routed screens)
-│   │   ├── LandingPage.tsx          # Home/hero section
-│   │   ├── Features.tsx             # Feature showcase
-│   │   ├── Services.tsx             # Services overview
-│   │   ├── Portfolio.tsx            # Case studies/examples
-│   │   ├── About.tsx                # About CLOAK
-│   │   └── [Other pages]
+│   │   ├── LandingPage.tsx          # Home: hero, screenshots, what works today
+│   │   ├── About.tsx                # How it works, for venues and guests
+│   │   ├── Features.tsx             # Technical features and architecture
+│   │   └── Status.tsx               # Project status (renders config/status.ts)
 │   ├── components/
-│   │   ├── Layout/
-│   │   │   ├── Header.tsx           # Navigation bar
-│   │   │   ├── Footer.tsx           # Footer
-│   │   │   └── Layout.tsx           # Main layout wrapper
-│   │   ├── UI/
-│   │   │   ├── Button.tsx           # Reusable button
-│   │   │   ├── Input.tsx            # Form input
-│   │   │   ├── Card.tsx             # Card component
-│   │   │   ├── Badge.tsx            # Badge component
-│   │   │   ├── Alert.tsx            # Alert/notification
-│   │   │   ├── Container.tsx        # Width container
-│   │   │   └── index.ts             # Barrel export
-│   │   ├── Card.tsx                 # Feature card
-│   │   ├── FeatureComponent.tsx     # Feature showcase
-│   │   ├── Month.tsx                # Calendar component
-│   │   └── [Other components]
+│   │   ├── Header.tsx               # Navigation bar
+│   │   ├── Footer.tsx               # Footer
+│   │   ├── Layout.tsx               # Main layout wrapper, sets page titles
+│   │   ├── PhoneFrame.tsx           # App screenshot in a phone outline
+│   │   └── UI/
+│   │       ├── Button.tsx           # Reusable button
+│   │       ├── Input.tsx            # Form input
+│   │       ├── Badge.tsx            # Badge component
+│   │       ├── Alert.tsx            # Alert/notification
+│   │       ├── Container.tsx        # Width container
+│   │       └── index.ts             # Barrel export
 │   ├── config/
-│   │   ├── app.ts                   # App-level config
-│   │   ├── seo.ts                   # SEO metadata
-│   │   └── firebase.ts              # Firebase setup (optional)
+│   │   ├── app.ts                   # Name, stage, navigation, screenshot list
+│   │   ├── status.ts                # What works / is half built / is missing
+│   │   └── seo.ts                   # Page titles and descriptions per route
 │   ├── stores/
 │   │   └── useAppStore.ts           # Zustand global state
 │   ├── hooks/
 │   │   ├── useTheme.ts              # Theme management
 │   │   ├── useLocalStorage.ts       # Local storage hook
+│   │   ├── usePageMeta.ts           # Sets title and description per route
 │   │   └── index.ts                 # Barrel export
 │   ├── types/
 │   │   └── index.ts                 # TypeScript types & interfaces
@@ -70,12 +74,15 @@ CLOAKWEBSITE/
 │   ├── __tests__/
 │   │   ├── Button.test.tsx          # Component tests
 │   │   ├── useLocalStorage.test.ts  # Hook tests
+│   │   ├── pages.test.tsx           # Every page renders; redirects and nav work
 │   │   └── setup.ts                 # Test configuration
 │   ├── App.tsx                      # Main app component with routing
 │   ├── index.css                    # Global styles
 │   ├── main.tsx                     # Entry point
 │   └── vite-env.d.ts                # Vite type definitions
-├── public/                          # Static assets (images, fonts, etc)
+├── public/
+│   ├── screenshots/                 # Real app screens used on the pages
+│   └── favicon.svg                  # CLOAK mark
 ├── .env.example                     # Example environment variables
 ├── .gitignore
 ├── vite.config.ts                   # Vite configuration
@@ -148,13 +155,15 @@ CLOAKWEBSITE follows a modern, professional design system:
 
 ### Colors
 
-- **Primary**: Blue (`#0066ff`)
-- **Secondary**: Gray (`#666666`)
-- **Success**: Green (`#00ff00`)
-- **Error**: Red (`#ff0000`)
-- **Background**: Almost Black (`#0a0a0a`)
-- **Card**: Dark Gray (`#1a1a1a`)
-- **Text**: White (`#ffffff`)
+The same palette as the mobile app (`CLOAKMobile/lib/core/colors/app_colors.dart`), used through Tailwind's purple, cyan and slate scales:
+
+- **Primary**: Purple (`#7C3AED`)
+- **Secondary**: Cyan (`#06B6D4`)
+- **Background**: Slate (`#0F172A`)
+- **Surface**: Dark Slate (`#1E293B`)
+- **Success**: Green (`#10B981`)
+- **Warning**: Amber (`#F59E0B`), also used for the "In development" markers
+- **Error**: Red (`#EF4444`)
 
 ### Typography
 
@@ -169,22 +178,13 @@ Pre-built reusable components in `src/components/UI/`:
 
 - `Button` - CTA buttons with variants
 - `Input` - Form input fields
-- `Card` - Content cards
 - `Badge` - Labels/tags
 - `Alert` - Notifications
 - `Container` - Max-width wrapper
 
 ## 🔗 API Integration
 
-The website connects to CLOAKBE API:
-
-```typescript
-// Example: Fetch featured services
-const response = await fetch(`${API_URL}/api/v1/services?limit=6`)
-const services = await response.json()
-```
-
-Configure API endpoint in `.env`:
+The pages are static and do not call the CLOAKBE API today. A small fetch wrapper exists in `src/services/api.ts` for when they do; it reads the API endpoint from `.env`:
 
 ```env
 VITE_API_URL=http://localhost:8080
@@ -195,14 +195,8 @@ VITE_API_URL=http://localhost:8080
 Copy `.env.example` to `.env.local` for local development:
 
 ```env
-# Backend API
+# Backend API (only read by src/services/api.ts)
 VITE_API_URL=http://localhost:8080
-
-# Firebase (optional, for CMS/analytics)
-VITE_FIREBASE_API_KEY=your_key
-VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_bucket
 ```
 
 **Note**: Only variables prefixed with `VITE_` are exposed to the frontend.

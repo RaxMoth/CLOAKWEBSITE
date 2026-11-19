@@ -1,5 +1,5 @@
 /**
- * Core TypeScript Type Definitions for GoodMorningGirl
+ * Core TypeScript Type Definitions for the CLOAK website
  * Comprehensive types for the entire application
  */
 

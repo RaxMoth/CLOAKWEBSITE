@@ -1,83 +1,40 @@
 /**
  * App Configuration
- * Central configuration for the application
+ * Central facts about CLOAK that several pages share.
+ *
+ * Everything here describes the product as it is built today. When the app
+ * or backend changes, update this file and `src/config/status.ts` first.
  */
 
 export const APP_CONFIG = {
-    name: "Good Morning Girl",
-    version: "1.0.0",
-    description: "A beautiful morning wellness template",
-    url: "https://goodmorninggirl.com",
+    name: "CLOAK",
+    tagline: "Digital Ticketing System",
+    description:
+        "Slot-based QR ticketing for venues. Every coat, bag or locker gets a numbered slot and a signed QR ticket.",
 
-    // Colors
+    // Shown in the header, footer and on the status page.
+    stage: "In development",
+    lastUpdated: "19 November 2026",
+
+    // Same palette as the mobile app (CLOAKMobile/lib/core/colors/app_colors.dart)
     colors: {
-        primary: "#3B82F6",
-        secondary: "#10B981",
-        accent: "#F59E0B",
-        danger: "#EF4444",
-        warning: "#FBBF24",
+        primary: "#7C3AED",
+        secondary: "#06B6D4",
+        background: "#0F172A",
+        surface: "#1E293B",
         success: "#10B981",
+        warning: "#F59E0B",
+        danger: "#EF4444",
         info: "#3B82F6",
     },
 
     // Navigation
     navigation: [
         { label: "Home", href: "/" },
-        { label: "About", href: "/about" },
+        { label: "How it works", href: "/about" },
         { label: "Features", href: "/features" },
-        { label: "Gallery", href: "/gallery" },
-        { label: "Contact", href: "/contact" },
+        { label: "Status", href: "/status" },
     ],
-
-    // Social Links
-    social: {
-        twitter: "https://twitter.com/goodmorninggirl",
-        instagram: "https://instagram.com/goodmorninggirl",
-        facebook: "https://facebook.com/goodmorninggirl",
-        linkedin: "https://linkedin.com/company/goodmorninggirl",
-    },
-
-    // Contact Info
-    contact: {
-        email: "hello@goodmorninggirl.com",
-        phone: "+1 (555) 123-4567",
-        address: "123 Morning Ave, Wellness City, WC 12345",
-    },
-
-    // Features
-    features: [
-        {
-            id: "wellness",
-            title: "Wellness Tracking",
-            description: "Track your daily wellness goals and progress",
-            icon: "Heart",
-        },
-        {
-            id: "meditation",
-            title: "Guided Meditation",
-            description: "Start your day with guided meditation sessions",
-            icon: "Lightbulb",
-        },
-        {
-            id: "community",
-            title: "Community",
-            description: "Join our supportive wellness community",
-            icon: "Users",
-        },
-        {
-            id: "insights",
-            title: "Personal Insights",
-            description:
-                "Get personalized wellness insights and recommendations",
-            icon: "Brain",
-        },
-    ],
-
-    // Pagination
-    pagination: {
-        defaultLimit: 10,
-        maxLimit: 100,
-    },
 
     // Timeouts (in ms)
     timeouts: {
@@ -86,3 +43,27 @@ export const APP_CONFIG = {
         debounce: 300,
     },
 };
+
+/** Real screens of the mobile app, captured from the current build with demo data. */
+export const APP_SCREENSHOTS = {
+    welcome: {
+        src: "/screenshots/app-welcome.jpg",
+        alt: "CLOAK welcome screen with the choice between Business and Customer",
+        caption: "Choose a role: venue or guest",
+    },
+    dashboard: {
+        src: "/screenshots/app-dashboard.jpg",
+        alt: "Venue dashboard listing the services Bag Storage with 40 slots and Main Cloakroom with 150 slots",
+        caption: "A venue's services and their slots",
+    },
+    ticketQr: {
+        src: "/screenshots/app-ticket-qr.jpg",
+        alt: "A generated ticket for the Main Cloakroom: a QR code, slot number 4 and the ticket ID",
+        caption: "A signed QR ticket for slot 4",
+    },
+    guestTickets: {
+        src: "/screenshots/app-guest-tickets.jpg",
+        alt: "A guest's ticket list with one active ticket for slot 5 and one released ticket for slot 4",
+        caption: "A guest's active and released tickets",
+    },
+} as const;

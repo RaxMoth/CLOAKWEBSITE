@@ -1,8 +1,8 @@
 {
-    "name": "react-web-template",
+    "name": "cloak-website",
     "private": true,
     "version": "1.0.0",
-    "description": "A clean, reusable React template for building websites",
+    "description": "Public website for CLOAK, a slot-based QR ticketing system for venues",
     "type": "module",
     "scripts": {
         "dev": "vite",

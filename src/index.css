@@ -1,3 +1,69 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    html {
+        @apply bg-cream;
+    }
+
+    body {
+        @apply bg-cream font-sans font-medium text-ink antialiased;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        @apply font-display font-semibold text-ink;
+        line-height: 1.2;
+    }
+
+    ::selection {
+        @apply bg-mint text-forest;
+    }
+
+    :focus-visible {
+        @apply outline outline-2 outline-offset-2 outline-leaf;
+    }
+}
+
+@layer components {
+    /* Pill buttons, as in the app */
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 rounded-full bg-leaf px-7 py-4 text-center text-base font-extrabold text-on-leaf transition hover:bg-forest;
+    }
+
+    .btn-outline {
+        @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-sage bg-surface px-7 py-[14px] text-center text-base font-extrabold text-leaf transition hover:bg-mint;
+    }
+
+    /* The same two buttons for use on the green header */
+    .btn-on-leaf {
+        @apply inline-flex items-center justify-center gap-2 rounded-full bg-on-leaf px-7 py-4 text-center text-base font-extrabold text-forest transition hover:bg-mint;
+    }
+
+    .btn-ghost-on-leaf {
+        @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-on-leaf/60 px-7 py-[14px] text-center text-base font-extrabold text-on-leaf transition hover:bg-white/15;
+    }
+
+    /* Warm white card with a large radius and a soft shadow */
+    .card {
+        @apply rounded-card bg-surface shadow-soft;
+    }
+
+    /* Small rounded label */
+    .chip {
+        @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-extrabold;
+    }
+
+    /* The app's "pebble": a soft, slightly uneven shape behind an icon */
+    .blob {
+        border-radius: 48% 34% 50% 36%;
+    }
+
+    /* Inline text link */
+    .link {
+        @apply font-extrabold text-leaf underline decoration-sage decoration-2 underline-offset-4 transition hover:text-forest;
+    }
+}

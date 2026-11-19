@@ -6,6 +6,8 @@ interface PhoneFrameProps {
     caption?: string;
     /** Load immediately instead of lazily (use for the image in the hero). */
     eager?: boolean;
+    /** Caption colour for use on the green header. */
+    onLeaf?: boolean;
     className?: string;
 }
 
@@ -19,22 +21,27 @@ const PhoneFrame: React.FC<PhoneFrameProps> = ({
     alt,
     caption,
     eager = false,
+    onLeaf = false,
     className = "",
 }) => {
     return (
         <figure className={`mx-auto w-full max-w-[260px] ${className}`}>
-            <div className="rounded-[2.25rem] border border-slate-600/70 bg-slate-950 p-2 shadow-2xl shadow-purple-950/60">
+            <div className="rounded-[2.25rem] bg-ink p-2 shadow-lift">
                 <img
                     src={src}
                     alt={alt}
                     width={750}
                     height={1624}
                     loading={eager ? "eager" : "lazy"}
-                    className="h-auto w-full rounded-[1.75rem]"
+                    className="h-auto w-full rounded-[1.75rem] bg-cream"
                 />
             </div>
             {caption && (
-                <figcaption className="mt-4 text-center text-sm text-gray-400">
+                <figcaption
+                    className={`mt-4 text-center text-sm font-semibold ${
+                        onLeaf ? "text-on-leaf/95" : "text-ink-soft"
+                    }`}
+                >
                     {caption}
                 </figcaption>
             )}

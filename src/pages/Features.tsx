@@ -6,36 +6,35 @@ import {
     Smartphone,
     BarChart3,
     Lock,
-    RefreshCw,
+    KeyRound,
     Repeat,
     FileCheck,
     ServerCog,
+    Gauge,
 } from "lucide-react";
+import PageHero from "../components/PageHero";
+import { IconBlob, SectionHeading } from "../components/CloakUI";
 
 const features = [
     {
         icon: Shield,
+        tone: "mint" as const,
         title: "HMAC-SHA256 signed QR codes",
         description:
             "Every ticket's QR code carries a signature computed with a secret key that is unique to the venue. The server recomputes the signature on every scan, so an edited or invented code is rejected. The key never leaves the server.",
         tech: "HMAC-SHA256, base64url-encoded JSON payload",
     },
     {
-        icon: Lock,
-        title: "Hashed passwords",
+        icon: KeyRound,
+        tone: "apricot" as const,
+        title: "Passwords and sign-in",
         description:
-            "Venue passwords are stored only as bcrypt hashes, never in plain text.",
-        tech: "bcrypt",
-    },
-    {
-        icon: RefreshCw,
-        title: "Token sign-in with roles",
-        description:
-            "Signing in returns a token that is valid for 24 hours and carries the account's role: business or customer. Every protected endpoint checks the token, and the service and ticket endpoints also check the role.",
-        tech: "JWT (HS256), role middleware",
+            "Venue passwords are stored only as bcrypt hashes. Signing in returns a token that is valid for 24 hours and carries the account's role, business or customer. Every protected endpoint checks the token and the role.",
+        tech: "bcrypt, JWT (HS256), role middleware",
     },
     {
         icon: Database,
+        tone: "mint" as const,
         title: "Row-level locking for slots",
         description:
             "Issuing a ticket claims the next free slot inside a database transaction that locks the row. Two tickets issued at the same moment never get the same slot.",
@@ -43,20 +42,31 @@ const features = [
     },
     {
         icon: Repeat,
-        title: "Slots are reused safely",
+        tone: "terracotta" as const,
+        title: "A ticket and its slot change together",
         description:
-            "Releasing a ticket frees its slot for the next guest. A ticket can only be released once, so a repeated release cannot free a slot that already belongs to someone else. If issuing a ticket fails halfway, the claimed slot is handed back.",
-        tech: "Release guard, slot hand-back on failure",
+            "Claiming a slot and saving its ticket happen in one transaction, and so do releasing a ticket and freeing its slot. A ticket can only be released once, and the database itself refuses a second active ticket for the same slot.",
+        tech: "Transactions, unique partial index",
     },
     {
         icon: Users,
-        title: "Each venue sees only its own",
+        tone: "apricot" as const,
+        title: "Each account sees only its own",
         description:
-            "A venue can issue, scan and release tickets only for its own services. A QR code issued by another venue is refused.",
-        tech: "Ownership checks in the business logic",
+            "A venue can issue, scan and release tickets only for its own services, and a QR code issued by another venue is refused. A guest can only list their own tickets.",
+        tech: "Ownership checks on every request",
+    },
+    {
+        icon: Gauge,
+        tone: "mint" as const,
+        title: "Rate limits and security headers",
+        description:
+            "Requests to the API are rate limited, sign-in and registration more tightly, and repeated failed sign-ins for one account are blocked for a while. Responses carry standard security headers.",
+        tech: "Fiber limiter and helmet middleware",
     },
     {
         icon: Smartphone,
+        tone: "terracotta" as const,
         title: "One Flutter app for both roles",
         description:
             "Venue staff get a service dashboard, QR generation and a camera scanner. Guests get their ticket list. The app runs on iPhone today; the Android build has not been tested.",
@@ -64,6 +74,7 @@ const features = [
     },
     {
         icon: BarChart3,
+        tone: "apricot" as const,
         title: "Occupancy per service",
         description:
             "The backend reports total, occupied and free slots for each service. The app does not show these numbers yet.",
@@ -107,6 +118,7 @@ const layers = [
         summary: "Five tables linked by foreign keys",
         points: [
             "businesses, customers, services, slots, tickets",
+            "Uniqueness rules for account emails, active tickets per slot and QR signatures",
             "Indexes on the columns used for lookups",
             "Connection pooling with pgxpool",
         ],
@@ -116,155 +128,143 @@ const layers = [
 const principles = [
     {
         icon: ServerCog,
+        tone: "terracotta" as const,
         title: "The server decides",
         description:
             "A QR code is always re-verified on the server before anything happens. Signing keys never leave the server, so the app cannot mint or alter tickets.",
-        style: "bg-red-900/30 border-red-500/50",
-        iconStyle: "text-red-400",
     },
     {
         icon: Lock,
+        tone: "mint" as const,
         title: "Every service and ticket request is checked",
         description:
             "Service and ticket endpoints require a valid token. Role checks run in middleware, and a venue can only act on its own services and tickets.",
-        style: "bg-green-900/30 border-green-500/50",
-        iconStyle: "text-green-400",
     },
     {
         icon: FileCheck,
+        tone: "apricot" as const,
         title: "Tamper-evident tickets",
         description:
             "The signature covers the ticket ID, service, venue, slot number and issue time. Changing any of them makes the ticket invalid.",
-        style: "bg-blue-900/30 border-blue-500/50",
-        iconStyle: "text-blue-400",
     },
     {
         icon: Database,
+        tone: "sand" as const,
         title: "Parameterised queries",
         description:
             "All SQL is sent with bound parameters, so values from requests are never pasted into query text.",
-        style: "bg-yellow-900/30 border-yellow-500/50",
-        iconStyle: "text-yellow-400",
     },
 ];
 
 const Features: React.FC = () => {
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-900 to-slate-950">
-            {/* Header */}
-            <section className="py-16 sm:py-20 px-6 sm:px-12 lg:px-20 max-w-7xl mx-auto">
-                <h1 className="text-4xl sm:text-6xl font-black mb-6 text-white">
-                    Under the{" "}
-                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400">
-                        hood
-                    </span>
-                </h1>
-                <p className="text-xl sm:text-2xl text-gray-300 max-w-3xl">
-                    What the current build of CLOAK actually does and how. No
-                    benchmarks or guarantees here: nothing has been measured
-                    under load yet.
-                </p>
-            </section>
+        <div>
+            <PageHero
+                title={
+                    <>
+                        Under the <span className="text-sage">hood</span>
+                    </>
+                }
+                subtitle="What the current build of CLOAK actually does and how. No benchmarks or guarantees here: nothing has been measured under load yet."
+            />
 
             {/* Features Grid */}
-            <section className="py-12 sm:py-16 px-6 sm:px-12 lg:px-20 max-w-7xl mx-auto">
-                <div className="grid md:grid-cols-2 gap-8">
-                    {features.map((feature) => {
-                        const Icon = feature.icon;
-                        return (
-                            <div
-                                key={feature.title}
-                                className="bg-slate-800/50 border border-purple-500/30 rounded-xl p-8 hover:border-purple-400/60 transition"
-                            >
-                                <Icon className="w-12 h-12 text-purple-400 mb-4" />
-                                <h3 className="text-2xl font-bold text-white mb-3">
-                                    {feature.title}
-                                </h3>
-                                <p className="text-gray-300 mb-4 leading-relaxed">
-                                    {feature.description}
+            <section className="mx-auto max-w-7xl px-6 py-12 sm:px-12 sm:py-14 lg:px-20">
+                <div className="grid gap-6 md:grid-cols-2">
+                    {features.map((feature) => (
+                        <div
+                            key={feature.title}
+                            className="card flex flex-col p-6 sm:p-8"
+                        >
+                            <IconBlob
+                                icon={feature.icon}
+                                tone={feature.tone}
+                                className="mb-5"
+                            />
+                            <h3 className="mb-3 text-2xl">{feature.title}</h3>
+                            <p className="mb-5 leading-relaxed text-ink-soft">
+                                {feature.description}
+                            </p>
+                            <div className="mt-auto rounded-field bg-sand px-4 py-3">
+                                <p className="mb-0.5 text-xs font-extrabold text-forest">
+                                    Built with
                                 </p>
-                                <div className="bg-slate-900/50 border border-cyan-500/30 rounded-lg px-4 py-2">
-                                    <p className="text-xs font-bold text-cyan-400 mb-1">
-                                        Built with:
-                                    </p>
-                                    <p className="text-sm text-gray-400 break-words">
-                                        {feature.tech}
-                                    </p>
-                                </div>
+                                <p className="break-words text-sm text-ink-soft">
+                                    {feature.tech}
+                                </p>
                             </div>
-                        );
-                    })}
+                        </div>
+                    ))}
                 </div>
             </section>
 
             {/* Architecture Overview */}
-            <section className="py-12 sm:py-16 px-6 sm:px-12 lg:px-20 max-w-7xl mx-auto">
-                <h2 className="text-3xl sm:text-4xl font-bold text-white mb-12 text-center">
-                    System architecture
-                </h2>
-                <div className="bg-slate-800/50 border border-purple-500/30 rounded-2xl p-6 sm:p-12">
-                    <ol className="space-y-12">
-                        {layers.map((layer, index) => (
-                            <li key={layer.title}>
-                                <div className="flex items-center gap-4 mb-6">
-                                    <div className="w-12 h-12 shrink-0 rounded-lg bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center text-white font-bold">
-                                        {index + 1}
-                                    </div>
-                                    <div>
-                                        <h3 className="text-xl sm:text-2xl font-bold text-white">
-                                            {layer.title}
-                                        </h3>
-                                        <p className="text-gray-400">
-                                            {layer.summary}
-                                        </p>
-                                    </div>
+            <section className="mx-auto max-w-7xl px-6 py-12 sm:px-12 sm:py-14 lg:px-20">
+                <SectionHeading
+                    align="center"
+                    title="System architecture"
+                    className="mb-12"
+                />
+                <ol className="space-y-5">
+                    {layers.map((layer, index) => (
+                        <li key={layer.title} className="card p-6 sm:p-8">
+                            <div className="mb-5 flex items-center gap-4">
+                                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-leaf font-display text-xl font-semibold text-on-leaf">
+                                    {index + 1}
                                 </div>
-                                <ul className="sm:ml-16 space-y-2 text-gray-300">
-                                    {layer.points.map((point) => (
-                                        <li
-                                            key={point}
-                                            className="flex gap-3 break-words"
-                                        >
-                                            <span className="text-purple-400">
-                                                •
-                                            </span>
-                                            <span className="min-w-0">
-                                                {point}
-                                            </span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </li>
-                        ))}
-                    </ol>
-                </div>
+                                <div>
+                                    <h3 className="text-xl sm:text-2xl">
+                                        {layer.title}
+                                    </h3>
+                                    <p className="text-ink-soft">
+                                        {layer.summary}
+                                    </p>
+                                </div>
+                            </div>
+                            <ul className="space-y-2 text-ink-soft sm:ml-16">
+                                {layer.points.map((point) => (
+                                    <li
+                                        key={point}
+                                        className="flex gap-3 break-words"
+                                    >
+                                        <span className="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-sage"></span>
+                                        <span className="min-w-0">
+                                            {point}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+                        </li>
+                    ))}
+                </ol>
             </section>
 
             {/* Security Principles */}
-            <section className="py-12 sm:py-20 px-6 sm:px-12 lg:px-20 max-w-7xl mx-auto">
-                <h2 className="text-3xl sm:text-4xl font-bold text-white mb-12 text-center">
-                    How tickets stay trustworthy
-                </h2>
-                <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                    {principles.map((principle) => {
-                        const Icon = principle.icon;
-                        return (
-                            <div
-                                key={principle.title}
-                                className={`border rounded-xl p-8 ${principle.style}`}
-                            >
-                                <Icon
-                                    className={`w-12 h-12 mb-4 ${principle.iconStyle}`}
-                                />
-                                <h3 className="text-xl font-bold text-white mb-3">
-                                    {principle.title}
-                                </h3>
-                                <p className="text-gray-300">
-                                    {principle.description}
-                                </p>
-                            </div>
-                        );
-                    })}
+            <section className="mx-auto max-w-7xl px-6 py-12 sm:px-12 sm:py-16 lg:px-20">
+                <SectionHeading
+                    align="center"
+                    title="How tickets stay trustworthy"
+                    className="mb-12"
+                />
+                <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
+                    {principles.map((principle) => (
+                        <div
+                            key={principle.title}
+                            className="card p-6 sm:p-8"
+                        >
+                            <IconBlob
+                                icon={principle.icon}
+                                tone={principle.tone}
+                                className="mb-5"
+                            />
+                            <h3 className="mb-3 text-xl">
+                                {principle.title}
+                            </h3>
+                            <p className="leading-relaxed text-ink-soft">
+                                {principle.description}
+                            </p>
+                        </div>
+                    ))}
                 </div>
             </section>
         </div>

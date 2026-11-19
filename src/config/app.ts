@@ -16,16 +16,20 @@ export const APP_CONFIG = {
     stage: "In development",
     lastUpdated: "19 November 2026",
 
-    // Same palette as the mobile app (CLOAKMobile/lib/core/colors/app_colors.dart)
+    // Same palette as the mobile app (CLOAKMobile/lib/core/colors/app_colors.dart).
+    // The Tailwind theme in tailwind.config.js carries the full set.
     colors: {
-        primary: "#7C3AED",
-        secondary: "#06B6D4",
-        background: "#0F172A",
-        surface: "#1E293B",
-        success: "#10B981",
-        warning: "#F59E0B",
-        danger: "#EF4444",
-        info: "#3B82F6",
+        primary: "#387452", // leaf green
+        primaryDark: "#244F38", // forest
+        primaryLight: "#9CCBAA", // sage
+        secondary: "#EFA35C", // apricot
+        accent: "#E6835A", // terracotta
+        background: "#FBF5E6", // cream
+        surface: "#FFFDF8", // warm white
+        success: "#3F9B62",
+        warning: "#D9922B",
+        danger: "#C9523D",
+        info: "#3A8585",
     },
 
     // Navigation
@@ -48,7 +52,7 @@ export const APP_CONFIG = {
 export const APP_SCREENSHOTS = {
     welcome: {
         src: "/screenshots/app-welcome.jpg",
-        alt: "CLOAK welcome screen with the choice between Business and Customer",
+        alt: "CLOAK welcome screen: a coat hanger logo on a green wave header and the choice between Business and Customer",
         caption: "Choose a role: venue or guest",
     },
     dashboard: {
@@ -58,12 +62,12 @@ export const APP_SCREENSHOTS = {
     },
     ticketQr: {
         src: "/screenshots/app-ticket-qr.jpg",
-        alt: "A generated ticket for the Main Cloakroom: a QR code, slot number 4 and the ticket ID",
+        alt: "A generated ticket for the Main Cloakroom on a ticket-shaped card: a QR code, slot number 4 and the ticket ID",
         caption: "A signed QR ticket for slot 4",
     },
     guestTickets: {
         src: "/screenshots/app-guest-tickets.jpg",
-        alt: "A guest's ticket list with one active ticket for slot 5 and one released ticket for slot 4",
+        alt: "A guest's My Tickets screen with one active ticket for slot 5 and one released ticket for slot 4",
         caption: "A guest's active and released tickets",
     },
 } as const;

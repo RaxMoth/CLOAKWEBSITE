@@ -2,31 +2,44 @@ import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { APP_CONFIG } from "../config/app";
+import { HangerMark } from "./CloakUI";
 
+// The selected link sits in a mint pill, like the tabs of the app's
+// bottom navigation.
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `transition font-medium hover:text-purple-400 ${
-        isActive ? "text-purple-400" : "text-white"
+    `rounded-full px-4 py-2 font-extrabold transition focus-visible:outline-on-leaf ${
+        isActive
+            ? "bg-mint text-forest"
+            : "text-on-leaf/90 hover:bg-white/15 hover:text-on-leaf"
     }`;
+
+const StageMarker: React.FC = () => (
+    <>
+        <span className="h-2 w-2 rounded-full bg-apricot"></span>
+        {APP_CONFIG.stage}
+    </>
+);
 
 const Header: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     return (
-        <header className="bg-gradient-to-r from-slate-950 to-slate-900 border-b border-purple-500/30 text-white shadow-lg sticky top-0 z-50 backdrop-blur">
-            <div className="max-w-7xl mx-auto px-6 py-4">
-                <div className="flex justify-between items-center">
+        <header className="sticky top-0 z-50 bg-gradient-to-r from-forest to-leaf text-on-leaf">
+            <div className="mx-auto max-w-7xl px-6 py-3 sm:px-12 lg:px-20">
+                <div className="flex items-center justify-between">
                     {/* Logo */}
                     <Link
                         to="/"
-                        className="text-3xl font-black bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent hover:opacity-80 transition"
+                        className="flex items-center gap-3 font-display text-2xl font-semibold text-on-leaf transition hover:opacity-90 focus-visible:outline-on-leaf"
                     >
+                        <HangerMark size={38} />
                         {APP_CONFIG.name}
                     </Link>
 
                     {/* Desktop Navigation */}
                     <nav
                         aria-label="Main"
-                        className="hidden md:flex gap-8 items-center"
+                        className="hidden items-center gap-1 md:flex"
                     >
                         {APP_CONFIG.navigation.map((item) => (
                             <NavLink
@@ -40,10 +53,9 @@ const Header: React.FC = () => {
                         ))}
                         <Link
                             to="/status"
-                            className="flex items-center gap-2 rounded-full border border-amber-400/50 bg-amber-400/10 px-4 py-1.5 text-sm font-semibold text-amber-300 transition hover:bg-amber-400/20"
+                            className="chip ml-3 bg-apricot-light text-apricot-ink transition hover:bg-apricot focus-visible:outline-on-leaf"
                         >
-                            <span className="h-2 w-2 rounded-full bg-amber-400"></span>
-                            {APP_CONFIG.stage}
+                            <StageMarker />
                         </Link>
                     </nav>
 
@@ -52,9 +64,9 @@ const Header: React.FC = () => {
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                         aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
                         aria-expanded={mobileMenuOpen}
-                        className="md:hidden p-2 hover:bg-slate-800 rounded-lg transition"
+                        className="flex h-11 w-11 items-center justify-center rounded-full bg-white/15 transition hover:bg-white/25 focus-visible:outline-on-leaf md:hidden"
                     >
-                        {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                        {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
                     </button>
                 </div>
 
@@ -62,7 +74,7 @@ const Header: React.FC = () => {
                 {mobileMenuOpen && (
                     <nav
                         aria-label="Main"
-                        className="md:hidden mt-4 flex flex-col gap-4 pb-6"
+                        className="mt-3 flex flex-col items-start gap-2 pb-4 md:hidden"
                     >
                         {APP_CONFIG.navigation.map((item) => (
                             <NavLink
@@ -75,9 +87,8 @@ const Header: React.FC = () => {
                                 {item.label}
                             </NavLink>
                         ))}
-                        <p className="flex items-center gap-2 text-sm font-semibold text-amber-300">
-                            <span className="h-2 w-2 rounded-full bg-amber-400"></span>
-                            {APP_CONFIG.stage}
+                        <p className="chip ml-1 mt-1 bg-apricot-light text-apricot-ink">
+                            <StageMarker />
                         </p>
                     </nav>
                 )}

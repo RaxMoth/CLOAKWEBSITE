@@ -49,6 +49,9 @@ CLOAKWEBSITE/
 │   │   ├── Footer.tsx               # Footer
 │   │   ├── Layout.tsx               # Main layout wrapper, sets page titles
 │   │   ├── PhoneFrame.tsx           # App screenshot in a phone outline
+│   │   ├── PageHero.tsx             # Green wave header that opens every page
+│   │   ├── Waves.tsx                # Header waves, bottom waves, squiggle
+│   │   ├── CloakUI.tsx              # Hanger mark, icon blobs, chips, ticket card
 │   │   └── UI/
 │   │       ├── Button.tsx           # Reusable button
 │   │       ├── Input.tsx            # Form input
@@ -155,22 +158,29 @@ CLOAKWEBSITE follows a modern, professional design system:
 
 ### Colors
 
-The same palette as the mobile app (`CLOAKMobile/lib/core/colors/app_colors.dart`), used through Tailwind's purple, cyan and slate scales:
+The same palette as the mobile app (`CLOAKMobile/lib/core/colors/app_colors.dart`), defined as named colours in `tailwind.config.js`:
 
-- **Primary**: Purple (`#7C3AED`)
-- **Secondary**: Cyan (`#06B6D4`)
-- **Background**: Slate (`#0F172A`)
-- **Surface**: Dark Slate (`#1E293B`)
-- **Success**: Green (`#10B981`)
-- **Warning**: Amber (`#F59E0B`), also used for the "In development" markers
-- **Error**: Red (`#EF4444`)
+- **Greens**: `leaf` (`#387452`, primary), `forest` (`#244F38`), `fern` (`#5C9A76`), `sage` (`#9CCBAA`), `mint` (`#DDEEDC`)
+- **Cream**: `cream` (`#FBF5E6`, page), `surface` (`#FFFDF8`, cards), `sand` (`#F4EBD6`), `line` (`#E5DAC0`)
+- **Warm accents**: `apricot` (`#EFA35C`), also used for the "In development" markers, and `terracotta` (`#E6835A`)
+- **Text**: `ink` (`#22382C`), `ink-soft` (`#5D6E63`), `on-leaf` (`#FFFBF0`, cream on green)
+- **Status**: `success` (`#3F9B62`), `warning` (`#D9922B`), `danger` (`#C9523D`)
+
+### Shapes
+
+The site borrows the app's shapes (`CLOAKMobile/lib/shared/components/cloak_ui.dart`):
+
+- `PageHero` - the green wave header that opens every page
+- `HeaderWaves`, `BottomWaves`, `Squiggle` in `components/Waves.tsx` - the layered waves and the squiggly rule under headings
+- `IconBlob`, `Chip`, `SectionHeading`, `TicketCard`, `HangerMark` in `components/CloakUI.tsx`
+- `.card`, `.btn-primary`, `.btn-outline`, `.chip`, `.blob` in `src/index.css` - soft cards, pill buttons, pebble shapes
 
 ### Typography
 
-- **Display**: Bold, large headings
-- **Heading**: Semibold, section titles
-- **Body**: Regular, content text
-- **Small**: Smaller, secondary text
+- **Headings**: Fredoka, semibold (`font-display`)
+- **Body**: Nunito, medium, with extra-bold for buttons and labels (`font-sans`)
+
+Both fonts are self-hosted through the `@fontsource` packages imported in `src/main.tsx`, so the site makes no requests to a font service.
 
 ### Components
 

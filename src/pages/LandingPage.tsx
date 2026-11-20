@@ -33,7 +33,7 @@ const capabilities = [
         tone: "mint" as const,
         title: "A ticket list for guests",
         description:
-            "Guests sign in with an email address and phone number and see which of their tickets are active and which were released.",
+            "Guests sign in with a 6-digit code sent to their email address and see which of their tickets are active and which were released.",
     },
 ];
 

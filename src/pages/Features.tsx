@@ -29,7 +29,7 @@ const features = [
         tone: "apricot" as const,
         title: "Passwords and sign-in",
         description:
-            "Venue passwords are stored only as bcrypt hashes. Signing in returns a token that is valid for 24 hours and carries the account's role, business or customer. Every protected endpoint checks the token and the role.",
+            "Venue passwords are stored only as bcrypt hashes. Guests have no password: they sign in with a single-use 6-digit code sent to their email address, which expires after 10 minutes and allows 5 attempts. Signing in returns a token that is valid for 24 hours and carries the account's role, business or customer. Every protected endpoint checks the token and the role.",
         tech: "bcrypt, JWT (HS256), role middleware",
     },
     {
@@ -87,7 +87,7 @@ const layers = [
         title: "API layer (Go, Fiber)",
         summary: "REST endpoints under /api/v1 with token and role middleware",
         points: [
-            "POST /auth/business/register, /auth/business/login, /auth/customer/login",
+            "POST /auth/business/register, /auth/business/login, /auth/customer/code, /auth/customer/verify",
             "POST and GET /services, GET /services/:id, GET /services/:id/stats",
             "POST /tickets/checkin, /tickets/scan, /tickets/:id/release",
             "GET /customers/:id/tickets",

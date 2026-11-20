@@ -152,13 +152,13 @@ const About: React.FC = () => {
                             <IconBlob icon={User} tone="apricot" />
                             <div>
                                 <h3 className="mb-2 text-xl sm:text-2xl">
-                                    Sign in with email and phone number
+                                    Sign in with an emailed code
                                 </h3>
                                 <p className="text-lg leading-relaxed text-ink-soft">
-                                    Guests do not set a password. Entering an
-                                    email address and phone number signs them
-                                    in, and the first sign-in creates their
-                                    account.
+                                    Guests do not set a password. They enter
+                                    their email address, receive a 6-digit code
+                                    and type it in. The first sign-in creates
+                                    their account.
                                 </p>
                             </div>
                         </div>

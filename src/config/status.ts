@@ -47,7 +47,7 @@ export const STATUS_GROUPS: StatusGroup[] = [
             },
             {
                 title: "Guest sign-in and ticket list",
-                detail: "A guest signs in with an email address and phone number and sees their tickets as active or released.",
+                detail: "A guest signs in with a 6-digit code sent to their email address and sees their tickets as active or released.",
             },
             {
                 title: "Staying signed in",
@@ -67,6 +67,10 @@ export const STATUS_GROUPS: StatusGroup[] = [
             {
                 title: "Camera scanner",
                 detail: "The scanner screen sends a scanned code to the backend and offers to release the slot. It has not been tested end to end on a phone yet.",
+            },
+            {
+                title: "Emailing guest sign-in codes",
+                detail: "Sending the code needs a mail server, and none is set up yet. Until then the code only appears in the backend's log on the development machine.",
             },
             {
                 title: "Guest self check-in",

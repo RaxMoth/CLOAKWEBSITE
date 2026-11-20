@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { APP_CONFIG } from "../config/app";
+import { DASHBOARD_PATHS, isDashboardAvailable } from "../config/dashboard";
 import { HangerMark } from "./CloakUI";
 
 // The selected link sits in a mint pill, like the tabs of the app's
@@ -23,6 +24,14 @@ const StageMarker: React.FC = () => (
 const Header: React.FC = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+    // Local development only; the public site has no dashboard to link to.
+    const navigation = isDashboardAvailable()
+        ? [
+              ...APP_CONFIG.navigation,
+              { label: "Dashboard", href: DASHBOARD_PATHS.overview },
+          ]
+        : APP_CONFIG.navigation;
+
     return (
         <header className="sticky top-0 z-50 bg-gradient-to-r from-forest to-leaf text-on-leaf">
             <div className="mx-auto max-w-7xl px-6 py-3 sm:px-12 lg:px-20">
@@ -41,7 +50,7 @@ const Header: React.FC = () => {
                         aria-label="Main"
                         className="hidden items-center gap-1 md:flex"
                     >
-                        {APP_CONFIG.navigation.map((item) => (
+                        {navigation.map((item) => (
                             <NavLink
                                 key={item.href}
                                 to={item.href}
@@ -76,7 +85,7 @@ const Header: React.FC = () => {
                         aria-label="Main"
                         className="mt-3 flex flex-col items-start gap-2 pb-4 md:hidden"
                     >
-                        {APP_CONFIG.navigation.map((item) => (
+                        {navigation.map((item) => (
                             <NavLink
                                 key={item.href}
                                 to={item.href}

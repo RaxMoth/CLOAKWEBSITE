@@ -151,6 +151,28 @@ npm run preview
 | `npm run lint`   | Run ESLint                            |
 | `npm run test`   | Run Vitest unit tests                 |
 | `npm run test:ui`| Run tests in UI mode                  |
+| `npm run dashboard` | Site plus the local venue dashboard (see below) |
+| `npm run dashboard:sample` | Same, with built-in sample statistics |
+
+### Local venue dashboard
+
+A venue can sign in at `/login` and see its statistics at `/dashboard`:
+slots occupied and free right now, tickets issued and released per day,
+average hold time, a page per service and recent activity.
+
+The dashboard only exists in local development. It talks to the CLOAK
+backend (CLOAKBE) running on this computer, so the public build that Vercel
+deploys leaves it out, and it stays off unless the page is served from
+`localhost`.
+
+1. In `CLOAKBE`, load the sample data and start the API:
+   `make seed`, then `make dev` (API on http://localhost:8080).
+2. Here, run `npm run dashboard` and open http://localhost:5173/login.
+3. Sign in with the sample venue from the CLOAKBE README
+   (`venue@cloak.test`).
+
+To point at a backend on another port, override the URL:
+`VITE_API_URL=http://localhost:8081 npm run dashboard`.
 
 ## 🎨 Design System
 

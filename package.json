@@ -6,6 +6,8 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
+        "dashboard": "vite --mode dashboard",
+        "dashboard:sample": "vite --mode dashboard-sample",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
